@@ -1,12 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, CACHE_MANAGER, Inject } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './schema/todo.schema';
+import { Cache } from 'cache-manager';
 
 @Controller('todo')
 export class TodoController {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(
+    private readonly todoService: TodoService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    ) {}
 
   @Post()
   async create(@Body() createTodoDto: CreateTodoDto):Promise<Todo> {
@@ -14,8 +18,16 @@ export class TodoController {
   }
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  async findAll():Promise<Todo[]> {
+
+    let value:Todo[] = await this.cacheManager.get('findAll');
+
+    if(!value){
+      value=await this.todoService.findAll()
+      await this.cacheManager.set('findAll',value,100);
+    }
+
+    return value;
   }
 
   @Get(':id')

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {  Injectable, NotFoundException ,Inject} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -7,7 +7,11 @@ import { Todo, TodoDocument } from './schema/todo.schema';
 
 @Injectable()
 export class TodoService {
-  constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
+  constructor(
+    @InjectModel(Todo.name) private todoModel: Model<TodoDocument>,
+
+    
+    ) {}
 
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
     try {
@@ -51,3 +55,7 @@ export class TodoService {
     return { message: 'ok' };
   }
 }
+function CACHE_MANAGERNAGER(CACHE_MANAGERNAGER: any) {
+  throw new Error('Function not implemented.');
+}
+
