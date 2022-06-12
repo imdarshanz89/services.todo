@@ -1,9 +1,6 @@
 {
   "name": "service.todo",
   "version": "0.0.1",
-  "engines": {
-    "node": "14.16.1"
-  },
   "description": "",
   "author": "",
   "private": true,
@@ -15,9 +12,9 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/src/main.js",
-    "prestart:prod": "node dist/src/main.js",
-    "postinstall": "npm run prestart:prod",
+    "start:prod": "node dist/main.js",
+    "prestart:prod": "node dist/main.js",
+    "postinstall": "nest build & npm run prestart:prod",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
